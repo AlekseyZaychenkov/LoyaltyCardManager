@@ -1,0 +1,14 @@
+/account/migrations/0001_initial.py
+/.idea/.gitignore
+/.idea/.name
+/.idea/ClassManager.iml
+/.idea/modules.xml
+/.idea/misc.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/vcs.xml
+/card_manager/migrations/__init__.py
+/card_manager/migrations/0001_initial.py
+/card_manager/migrations/0002_card_id_alter_card_number.py
+/db.sqlite3
+/.idea/LoyaltyCardManager.iml
+/package-lock.json

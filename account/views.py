@@ -25,7 +25,7 @@ def loginView(request):
             if form.is_valid():
                 user = authenticate(email=email, password=password)
                 login(request, user)
-                return redirect('home')
+                return redirect('cards_find_by')
     else:
         form = AccountAuthenticationForm()
 
@@ -46,8 +46,9 @@ def registerView(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return redirect('cards_find_by')
     else:
         form = RegistrationForm()
     context['form'] = form
     return render(request, "to_register.html", context)
+

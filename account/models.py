@@ -8,7 +8,7 @@ from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-import settings
+import LoyaltyCardManager.settings as settings
 
 
 class AccountManager(BaseUserManager):
