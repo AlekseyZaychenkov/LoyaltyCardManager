@@ -9,7 +9,7 @@ log = logging.getLogger(__name__)
 
 @admin.register(Purchase)
 class PurchaseAdmin(admin.ModelAdmin):
-    list_display = ('get_purchase_id', 'sum', 'get_purchase_series_and_number')
+    list_display = ('get_purchase_id', 'sum', 'date_time', 'get_purchase_series_and_number')
 
     @admin.display(ordering='questionnaire__title', description='Questionnaire')
     def get_purchase_series_and_number(self, purchases):

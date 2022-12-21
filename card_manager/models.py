@@ -1,8 +1,11 @@
+from datetime import datetime
+
 from django.db import models
 from djmoney.models.fields import MoneyField
 
 
 class Card(models.Model):
+    id = models.AutoField(primary_key=True)
     number = models.IntegerField()
     series = models.IntegerField()
     release_date = models.DateTimeField()
@@ -34,4 +37,6 @@ class Card(models.Model):
 class Purchase(models.Model):
     id = models.AutoField(primary_key=True)
     sum = MoneyField(max_digits=14, decimal_places=2, default_currency='RUB')
+    date_time = models.DateTimeField(default=datetime.now())
     card = models.ForeignKey(Card, on_delete=models.CASCADE)
+

@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 import logging
+import random
+import sys
+from datetime import datetime, timedelta
 
 from django import forms
 from django.core.validators import MinValueValidator
@@ -50,19 +53,61 @@ class CardsConditionsForm(forms.Form):
         return cards
 
 
+class GenerateCardsForm(forms.Form):
+    series = forms.IntegerField(min_value=1)
+    amount = forms.IntegerField(min_value=1)
+    expiration_date = forms.ChoiceField(choices=[(timedelta(days=int(365)), '1 year'),
+                                                 (timedelta(days=int(182)), '6 month'),
+                                                 (timedelta(days=int(30)), '1 month'), ])
+
+    status = forms.ChoiceField(choices=[('Not activated', 'Not activated'),
+                                        ('Activated', 'Activated'), ])
+
+    def generate(self):
+        cleaned_data = self.cleaned_data
+        series = cleaned_data.get('series')
+        for i in range(1, cleaned_data.get('amount')):
+            while True:
+                number = random.randint(1, sys.maxsize)
+                if not Card.objects.filter(series=series).filter(number=number).exists():
+                    break
+
+            card = Card(series=series,
+                        number=number,
+                        release_date=datetime.now(),
+                        end_date=datetime.now() + timedelta(days=int(cleaned_data.get('expiration_date').split()[0])),
+                        status=cleaned_data.get('status'))
+            card.save()
+
+
 class CardEditForm(forms.ModelForm):
-    number = forms.IntegerField()
-    series = forms.IntegerField()
-    release_date = forms.DateTimeField()
-    end_date = forms.DateTimeField()
+    id = forms.IntegerField()
     status = forms.ChoiceField(choices=Card.STATUS_CHOICES)
 
     def save(self, commit=True):
-        card = self.instance
+        cleaned_data = self.cleaned_data
+        card = Card.objects.get(id=cleaned_data.get('id'))
+        card.status = cleaned_data.get('status')
+
         if commit:
             card.save()
 
     class Meta:
         model = Card
-        exclude = ('schedule',)
+        exclude = ('series', 'number', 'release_date', 'end_date', 'status')
 
+
+class CardDeleteForm(forms.Form):
+
+    def delete(self, series, number):
+        card = Card.objects.filter(series=series).get(number=number)
+        card.delete()
+
+
+class UpdateStatusesForm(forms.Form):
+
+    def update(self):
+        cards = Card.objects.filter(status='Activated').filter(end_date__lte=datetime.now())
+        for card in cards:
+            card.status = 'Expired'
+            card.save()

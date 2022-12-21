@@ -1,6 +1,5 @@
 {% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
 
-
 <div class="row">
     <table class="table table-striped">
         <thead>
@@ -10,7 +9,6 @@
                         <button class="btn btn-primary" type="submit" name="action" value="find_cards">Find</button>
                         <button class="btn btn-secondary" type="submit" name="action" value="clear_form">Clear form</button>
                     </td>
-
                     <th scope="col">
                         <label>Series from:</label>
                         {% render_field cards_conditions_form.series_from class="form-control" %}
@@ -19,7 +17,6 @@
                         {% render_field cards_conditions_form.series_to class="form-control" %}
                         {{ cards_conditions_to.series_from.errors }}
                     </th>
-
                     <th scope="col">
                         <label>Number from:</label>
                         {% render_field cards_conditions_form.number_from class="form-control" %}
@@ -28,13 +25,11 @@
                         {% render_field cards_conditions_form.number_to class="form-control" %}
                         {{ cards_conditions_to.number_to.errors }}
                     </th>
-
                     <th scope="col">
                         <label>Status:</label>
                         {% render_field cards_conditions_form.status class="form-control" %}
                         {{ cards_conditions_form.status.errors }}
                     </th>
-
                     <th scope="col">
                         <label>Release date from:</label>
                         {% render_field cards_conditions_form.release_date_from class="form-control" %}
@@ -43,7 +38,6 @@
                         {% render_field cards_conditions_form.release_date_to class="form-control" %}
                         {{ cards_conditions_form.date.errors }}
                     </th>
-
                     <th scope="col">
                         <label>End Date from:</label>
                         {% render_field cards_conditions_form.end_date_from class="form-control" %}
@@ -52,12 +46,12 @@
                         {% render_field cards_conditions_form.end_date_to class="form-control" %}
                         {{ cards_conditions_form.end_date_to.errors }}
                     </th>
+                    <th scope="col">
 
 
+                    </th>
                 </form>
             </tr>
-
-
         </thead>
         <thead>
             <tr>
@@ -68,32 +62,33 @@
                 <th scope="col">Status</th>
                 <th scope="col">Release date</th>
                 <th scope="col">End Date</th>
+                <th scope="col"></th>
             </tr>
         </thead>
-    <tbody>
-    {% for card in cards %}
-        <tr>
-            <td>
-                <a type="button" class="btn btn-sm btn-outline-dark float-right" href="#">Show and edit</a>
-            </td>
-            <th scope="row">{{card.series}}</th>
-            <td>{{card.number}}</td>
-            <td>{{card.status}}</td>
-            <td>{{card.release_date}}</td>
-            <td>{{card.end_date}}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
-<!--    <div class="col-md-3 card">-->
-<!--        <div class="row top-image-row position-relative">-->
-<!--            <div class="col text-center">-->
-<!--                <a type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#image_create_modal"> + Add new image + </a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-
+        <tbody>
+        {% for card in cards %}
+            <tr>
+                <td>
+                    <a type="button" class="btn btn-sm btn-outline-dark float-right"
+                       href="{% url 'cards_card_edit' series=card.series number=card.number %}">Show and edit</a>
+                </td>
+                <th scope="row">{{card.series}}</th>
+                <td>{{card.number}}</td>
+                <td>{{card.status}}</td>
+                <td>{{card.release_date}}</td>
+                <td>{{card.end_date}}</td>
+                <td>
+                    <a type="button" class="btn btn-sm btn-danger rounded-circle"
+                       href="{% url 'cards_card_delete'  series=card.series number=card.number %}">X</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
+
+{% block card_modals %}
+{% include 'card_modals.html' %}
+{% endblock %}
 
 {% endblock content %}

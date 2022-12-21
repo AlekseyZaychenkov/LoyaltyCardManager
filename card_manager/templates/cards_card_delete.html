@@ -9,6 +9,11 @@
     {% block cards_table %}
     {% include 'cards_table.html' %}
     {% endblock %}
+    <script>
+        $(function() {
+            $('#delete_card_modal').modal({show: true});
+        });
+    </script>
 </div>
 
 {% endblock content %}

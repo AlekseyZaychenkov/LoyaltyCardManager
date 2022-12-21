@@ -6,9 +6,26 @@
     {% include 'cards_top_panel.html' %}
     {% endblock %}
     <hr>
+    <form enctype="multipart/form-data" method="post"> {% csrf_token %}
+        <label>Series:</label>
+        {% render_field generate_cards_form.series class="form-control" %}
+        {{ generate_cards_form.series.errors }}
 
+        <label>Amount:</label>
+        {% render_field generate_cards_form.amount class="form-control" %}
+        {{ generate_cards_form.amount.errors }}
 
+        <label>Expiration date:</label>
+        {% render_field generate_cards_form.expiration_date class="form-control" %}
+        {{ generate_cards_form.expiration_date.errors }}
 
+        <label>Status:</label>
+        {% render_field generate_cards_form.status class="form-control" %}
+        {{ generate_cards_form.status.errors }}
+
+        <button class="btn btn-primary" type="submit" name="action" value="generate_cards">Generate</button>
+        <button class="btn btn-secondary" type="submit" name="action" value="clear_form">Clear form</button>
+    </form>
 </div>
 
 {% endblock content %}
